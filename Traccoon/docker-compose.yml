@@ -1,0 +1,32 @@
+# Como rodar o projeto inteiro (backend + frontend) com um comando só:
+#
+#   docker compose up --build
+#
+# Depois é só abrir http://localhost:8080 no navegador. A API fica em
+# http://localhost:5000 (o frontend já está configurado pra falar com
+# ela nesse endereço, em frontend/js/api.js).
+#
+# Pra derrubar tudo:
+#   docker compose down
+
+services:
+  backend:
+    build: ./backend
+    container_name: autotrans-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      # Guarda o banco SQLite fora do container, num arquivo do próprio
+      # computador. Assim, se você recriar o container (docker compose
+      # up --build de novo), os dados cadastrados não se perdem.
+      - ./backend/autotrans.db:/app/autotrans.db
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: autotrans-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

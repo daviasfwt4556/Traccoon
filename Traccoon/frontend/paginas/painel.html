@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel — AutoTrans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="app-body">
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <aside class="sidebar">
+        <a href="painel.html" class="sidebar-logo">🚗 AutoTrans</a>
+        <nav>
+            <a href="painel.html" class="sidebar-link">🏠 Início</a>
+            <a href="painel.html#screen-profile" class="sidebar-link">👤 Perfil</a>
+            <a href="materiais.html" class="sidebar-link">📚 Materiais</a>
+            <a href="painel.html#screen-ranking" class="sidebar-link">🏆 Ranking</a>
+            <a href="painel.html#screen-historico" class="sidebar-link">📊 Meu Histórico</a>
+            <a href="painel.html#screen-flashcards" class="sidebar-link">🪧 Placas</a>
+            <a href="admin_usuarios.html" class="sidebar-link admin-only" style="display:none;">🛠️ Gerir Usuários</a>
+            <a href="admin_categorias.html" class="sidebar-link admin-only" style="display:none;">🛠️ Gerir Categorias</a>
+            <a href="admin_questoes.html" class="sidebar-link admin-only" style="display:none;">🛠️ Gerir Questões</a>
+            <a href="admin_alternativas.html" class="sidebar-link admin-only" style="display:none;">🛠️ Gerir Alternativas</a>
+            <a href="admin_materiais.html" class="sidebar-link admin-only" style="display:none;">🛠️ Gerir Materiais</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-theme-row">
+                <span>Modo Escuro</span>
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle-switch">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <a href="#" class="sidebar-sair" onclick="sair()">← Sair</a>
+        </div>
+    </aside>
+    <label for="menu-toggle" class="sidebar-overlay"></label>
+    <label for="menu-toggle" class="hamburger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </label>
+
+    <div class="mobile-container">
+
+        <!-- TELA: PAINEL DE CONTROLE -->
+        <div id="screen-dashboard" class="screen active">
+            <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px;">
+                <div style="text-align: left;">
+                    <p class="dashboard-subtitle" style="text-align: left; margin-bottom: 5px;">Painel de controle</p>
+                    <h2 class="dashboard-title" style="text-align: left;" id="saudacao-usuario">Olá!</h2>
+                </div>
+                <div class="streak-badge" style="position: relative; top: auto; right: auto; margin-top: 0;">🔥 5 dias</div>
+            </div>
+
+            <div class="mascot-circle mascot-container" style="margin-top: 10px;">🦝</div>
+
+            <div class="card margin-bottom-20">
+                <h3>Trilhas de Estudo</h3>
+                <p>Escolha uma categoria e comece um simulado</p>
+                <button class="btn-card" onclick="navigateTo('screen-trails')">Ver Trilhas</button>
+            </div>
+
+            <div class="quick-menu" style="flex-wrap: wrap; justify-content: center; gap: 10px;">
+                <button class="menu-btn" onclick="navigateTo('screen-trails')">📚 Trilhas</button>
+                <button class="menu-btn" onclick="navigateTo('screen-flashcards')">🪧 Placas</button>
+                <button class="menu-btn" onclick="navigateTo('screen-ranking')">🏆 Ranking</button>
+                <button class="menu-btn" onclick="navigateTo('screen-historico')">📊 Histórico</button>
+                <button class="menu-btn" onclick="navigateTo('screen-profile')">⚙️ Perfil</button>
+            </div>
+        </div>
+
+        <!-- TELA: TRILHAS DE ESTUDO (dados reais da API) -->
+        <div id="screen-trails" class="screen">
+            <h2 style="margin-bottom: 20px;">Trilhas de Estudo</h2>
+
+            <p id="trilhas-erro" style="color:#e53e3e; font-weight:600;"></p>
+
+            <div id="lista-trilhas">
+                <p>Carregando categorias...</p>
+            </div>
+
+            <button class="btn btn-dark-green" style="margin-top: auto;" onclick="navigateTo('screen-dashboard')">Voltar</button>
+        </div>
+
+        <!-- TELA: SIMULADO / QUIZ (dados reais da API) -->
+        <div id="screen-quiz" class="screen">
+            <div class="quiz-header">
+                <span id="quiz-contador" style="font-weight: bold; color: var(--text-primary);">Questão 1</span>
+                <span id="quiz-mensagem-erro" style="color: #e53e3e; font-weight: bold;"></span>
+            </div>
+            <div class="question-box">
+                <p id="quiz-pergunta" style="font-size: 16px; color: var(--text-primary); text-align: left; font-weight: 600;">Carregando pergunta...</p>
+            </div>
+            <div id="quiz-alternativas"></div>
+            <button id="btn-confirmar" class="btn btn-green" style="margin-top: auto;" onclick="proximaQuestao()">Próxima</button>
+        </div>
+
+        <!-- TELA: RESULTADOS -->
+        <div id="screen-result" class="screen" style="position: relative; overflow: hidden;">
+            <div class="mascot-container" style="font-size: 80px; z-index: 2;">🦝🎉</div>
+            <h2 id="resultado-titulo" style="color: var(--btn-green); margin-bottom: 10px; z-index: 2;">Simulado Finalizado!</h2>
+            <p style="font-size: 16px; z-index: 2;">Veja como você se saiu abaixo:</p>
+            <div class="result-stats" style="z-index: 2;">
+                <div class="stat-box">
+                    <span id="resultado-nota" class="stat-value">0</span>
+                    <span class="stat-label">Nota</span>
+                </div>
+                <div class="stat-box">
+                    <span id="resultado-acertos" class="stat-value">0/0</span>
+                    <span class="stat-label">Acertos</span>
+                </div>
+            </div>
+            <button class="btn btn-green" style="margin-top: auto; z-index: 2;" onclick="navigateTo('screen-dashboard')">Voltar ao Painel</button>
+        </div>
+
+        <!-- TELA: RANKING (estático por enquanto — sem XP no back-end ainda) -->
+        <div id="screen-ranking" class="screen">
+            <h2>🏆 Placar Geral</h2>
+            <p>Em breve: ranking real por pontuação dos simulados.</p>
+            <button class="btn btn-dark-green" style="margin-top: 20px;" onclick="navigateTo('screen-dashboard')">Voltar</button>
+        </div>
+
+        <!-- TELA: HISTORICO DE SIMULADOS (dados reais via Repository) -->
+        <div id="screen-historico" class="screen">
+            <h2>📊 Meu Histórico</h2>
+            <div id="historico-estatisticas" class="result-stats"></div>
+            <div id="historico-lista" style="width: 100%;">
+                <p>Carregando histórico...</p>
+            </div>
+            <button class="btn btn-dark-green" style="margin-top: 20px;" onclick="navigateTo('screen-dashboard')">Voltar</button>
+        </div>
+
+        <!-- TELA: DETALHE DO SIMULADO (ou "Acesso negado", se não for o dono) -->
+        <div id="screen-detalhe-simulado" class="screen">
+            <h2 id="detalhe-titulo">Detalhes do simulado</h2>
+            <div id="detalhe-conteudo" style="width: 100%; text-align: left;"></div>
+            <button class="btn btn-dark-green" style="margin-top: 20px;" onclick="navigateTo('screen-historico')">Voltar ao Histórico</button>
+        </div>
+
+        <!-- TELA: PERFIL -->
+        <div id="screen-profile" class="screen">
+            <h2>Meu Perfil</h2>
+            <div id="perfil-foto-container" class="mascot-circle mascot-container" style="margin-top: 20px; width: 100px; height: 100px; font-size: 50px;">🦝</div>
+            <h3 id="perfil-nome" style="margin-bottom: 5px;">—</h3>
+            <p id="perfil-email">—</p>
+
+            <form id="form-perfil" style="width: 100%; margin-top: 20px; text-align: left;">
+                <div class="form-grupo">
+                    <label for="perfil-input-nome">Nome</label>
+                    <input type="text" id="perfil-input-nome" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="perfil-input-foto">URL da foto de perfil</label>
+                    <input type="url" id="perfil-input-foto" placeholder="https://...">
+                </div>
+                <div class="form-grupo">
+                    <label for="perfil-input-senha">Nova senha</label>
+                    <input type="password" id="perfil-input-senha" placeholder="Deixe em branco para manter a senha atual">
+                </div>
+                <p id="perfil-mensagem"></p>
+                <button type="submit" class="btn">Salvar alterações</button>
+            </form>
+
+            <div class="config-box">
+                <div class="config-item">
+                    <span style="color: var(--text-primary); font-weight: 600;">Modo Escuro</span>
+                    <label class="switch"><input type="checkbox" id="theme-toggle-switch-2"><span class="slider round"></span></label>
+                </div>
+            </div>
+            <button class="btn btn-dark-green" style="margin-top: 20px;" onclick="navigateTo('screen-dashboard')">Voltar ao Painel</button>
+            <button type="button" class="btn" style="margin-top: 10px; background: #e53e3e;" onclick="excluirConta()">Excluir minha conta</button>
+        </div>
+
+        <!-- TELA: FLASHCARDS 3D -->
+        <div id="screen-flashcards" class="screen">
+            <h2>Memorização</h2>
+            <p>Toque na carta para virar e ver a resposta.</p>
+            <div class="flashcard-scene" onclick="virarCard(this)">
+                <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">
+                        <span style="font-size: 90px;">🛑</span>
+                        <p style="margin-top: 20px; color: #333; font-weight: bold;">O que significa esta placa?</p>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <h3 style="color: white; font-size: 24px; margin-bottom: 10px;">Parada Obrigatória</h3>
+                        <p style="color: white;">Você deve parar o veículo completamente antes de cruzar a via.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-dark-green" style="margin-top: auto;" onclick="navigateTo('screen-dashboard')">Voltar</button>
+        </div>
+
+    </div>
+
+    <script src="../js/toast.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/painel.js"></script>
+</body>
+</html>
