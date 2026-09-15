@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerir Usuários — AutoTrans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="app-body">
+    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    <aside class="sidebar">
+        <a href="painel.html" class="sidebar-logo">🚗 AutoTrans</a>
+        <nav>
+            <a href="painel.html" class="sidebar-link">🏠 Início</a>
+            <a href="admin_usuarios.html" class="sidebar-link">🛠️ Usuários</a>
+            <a href="admin_categorias.html" class="sidebar-link">🛠️ Categorias</a>
+            <a href="admin_questoes.html" class="sidebar-link">🛠️ Questões</a>
+            <a href="admin_alternativas.html" class="sidebar-link">🛠️ Alternativas</a>
+            <a href="admin_materiais.html" class="sidebar-link">🛠️ Materiais</a>
+        </nav>
+        <div class="sidebar-footer"><a href="painel.html" class="sidebar-sair">← Voltar</a></div>
+    </aside>
+    <label for="menu-toggle" class="sidebar-overlay"></label>
+    <label for="menu-toggle" class="hamburger"><span></span><span></span><span></span></label>
+
+    <div class="mobile-container">
+    <div class="conteudo-pagina" style="padding: 30px 25px;">
+        <h2 style="text-align:left;" id="titulo-formulario">Cadastrar Usuário</h2>
+
+        <form id="form-usuario">
+            <input type="hidden" id="usuario-id">
+            <div class="form-grupo">
+                <label>Nome</label>
+                <input type="text" id="nome" required>
+            </div>
+            <div class="form-grupo">
+                <label>E-mail</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-grupo">
+                <label id="label-senha">Senha</label>
+                <input type="password" id="senha" placeholder="Mínimo 4 caracteres">
+                <small id="dica-senha" style="display:none; color:#999;">
+                    Deixe em branco para não alterar a senha atual.
+                </small>
+            </div>
+            <div class="form-grupo">
+                <label style="display:flex; align-items:center; gap:8px; font-weight:normal;">
+                    <input type="checkbox" id="is-admin" style="width:auto;"> É administrador
+                </label>
+            </div>
+            <button type="submit" id="botao-salvar" class="btn">Salvar</button>
+            <button type="button" id="botao-cancelar" class="btn btn-dark-green">Cancelar edição</button>
+        </form>
+        <p id="mensagem"></p>
+
+        <h3 style="text-align:left; margin-top:30px;">Usuários cadastrados</h3>
+        <div class="tabela-responsiva">
+            <table>
+                <tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Admin</th><th>Ações</th></tr>
+                <tbody id="tabela-usuarios"><tr><td colspan="4">Carregando...</td></tr></tbody>
+            </table>
+        </div>
+        <div id="paginacao-usuarios" class="paginacao"></div>
+    </div>
+    </div>
+
+    <script src="../js/toast.js"></script>
+    <script src="../js/paginacao.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/admin-guard.js"></script>
+    <script src="../js/admin_usuarios.js"></script>
+</body>
+</html>
